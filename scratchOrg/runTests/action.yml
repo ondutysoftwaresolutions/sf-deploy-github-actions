@@ -1,0 +1,16 @@
+name: 'runTestsInScratchOrg'
+description: 'Run the tests in the scratch org using the sent name.'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  scratch_org_name:
+    description: 'Name of the Scratch Org to use for pushing the package.'
+    required: true
+  minimum_test_coverage:
+    description: 'Minimum percentage of coverage needed to pass the build. DEFAULT 75'
+    required: false    
+branding:
+  icon: 'settings'
+  color: 'red'

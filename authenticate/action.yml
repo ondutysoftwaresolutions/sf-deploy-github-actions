@@ -1,0 +1,28 @@
+name: 'authenticate'
+description: 'Authenticate with Salesforce Org'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  app_client_id:
+    description: 'Consumer Key of the Salesforce Connected App'
+    required: true
+  username:
+    description: 'Username of the Salesforce User'
+    required: true
+  org_type:
+    description: 'Type of the SF Org. Possible values are: sandbox, production, scratch. DEFAULT sandbox'
+    required: false
+  certificate_path:
+    description: 'Path to the encrypted certificate'
+    required: true    
+  certificate_key:
+    description: 'Key used to decrypt the certificate'
+    required: true    
+  certificate_iv:
+    description: 'IV used to decrypt the certificate'
+    required: true        
+branding:
+    icon: 'log-in'
+    color: 'green'

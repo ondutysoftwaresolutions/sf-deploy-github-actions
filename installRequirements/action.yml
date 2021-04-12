@@ -1,0 +1,16 @@
+name: 'installRequirements'
+description: 'Install the Pre requisites to run the next actions'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  download_sfdx_url:
+    description: 'URL from where we can download the sfdx-cli package'
+    required: false
+  download_sfdx_filename:
+    description: 'Name of the tar file that needs to be downloaded'
+    required: false
+branding:
+    icon: 'download-cloud'
+    color: 'purple'

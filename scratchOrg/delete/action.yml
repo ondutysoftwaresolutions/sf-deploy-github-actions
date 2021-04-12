@@ -1,0 +1,13 @@
+name: 'deleteScratchOrg'
+description: 'Delete the scratch org using the sent name'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  scratch_org_name:
+    description: 'Name of the Scratch Org to delete.'
+    required: true
+branding:
+  icon: 'trash-2'
+  color: 'gray-dark'

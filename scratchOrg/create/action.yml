@@ -1,0 +1,16 @@
+name: 'createScratchOrg'
+description: 'Create the scratch org using the sent definition file'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  scratch_definition_path:
+    description: 'Path to the definition file that contains the Scratch org details'
+    required: true
+outputs:
+  scratch_org_name:
+    description: 'Name of the created scratch org.'    
+branding:
+  icon: 'file-plus'
+  color: 'yellow'

@@ -1,0 +1,12 @@
+name: 'quickDeploymentPackage'
+description: 'Quick deploy the package validated in the previous step'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  job_id:
+    description: 'Job Id got it from the validation step.'
+    required: true
+branding:
+    icon: 'upload-cloud'
+    color: 'blue'

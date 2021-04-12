@@ -1,0 +1,13 @@
+name: 'pushToScratchOrg'
+description: 'Push the package content to the scratch org using the sent name'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  scratch_org_name:
+    description: 'Name of the Scratch Org to use for pushing the package.'
+    required: true
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'

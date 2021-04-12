@@ -1,0 +1,31 @@
+name: 'validateOrDeployPackage'
+description: 'Validate or Deploy the metadata in the Org (Sandbox/Production) and choose whether to run tests or not'
+author: 'Pablo Martinez'
+runs:
+  using: 'node12'
+  main: './index.js'
+inputs:
+  package_path:
+    description: 'Path to the manifest package (package.xml) or Destructive changes folder'
+    required: true
+  test_level:
+    description: 'Choose to run or not the tests. Possible values are: RunLocalTests, NoTestRun.'
+    required: false
+  org_type:
+    description: 'Type of the SF Org. Possible values are: sandbox, production, scratch. DEFAULT sandbox'
+    required: false  
+  wait_time:
+    description: 'Number of minutes to wait for the command to complete and display results to the terminal window. DEFAULT 30'
+    required: false
+  deploy:
+    description: 'Deploy the package to the sandbox? or just validate the package?. If the org_type is Production, this parameter will not have an impact because for production we need to first validate and then quick deploy. DEFAULT false'
+    required: false    
+  is_destructive:
+    description: 'Is the deployment a destructive changes deployment?. DEFAULT false'
+    required: false
+outputs:
+  job_id:
+    description: 'Job ID to be used in the next step (Deployment)'
+branding:
+    icon: 'info'
+    color: 'orange'
