@@ -23,9 +23,7 @@ const run = async () => {
     const parsedResult = JSON.parse(result);
     // if it was not successful, send an error, otherwise show success and continue
     if (parsedResult.status !== 0) {
-        const errorMessage = `ERROR when pushing the changes: ${parsedResult.name} // ${parsedResult.message}`;
-        core_1.error(`\u001b[38;2;255;0;0m${errorMessage}`);
-        core_1.setFailed(errorMessage);
+        core_1.setFailed(`\u001b[38;2;255;0;0mERROR when pushing the changes: ${parsedResult.name} // ${parsedResult.message}`);
     }
     else {
         core_1.info(`\u001b[35m*** Changes were deployed successfully to the Scratch Org '${scratchOrgName}'. ***`);
@@ -87,8 +85,7 @@ const execSync = (command, params = []) => {
     const result = child_process_1.spawnSync(command, params, { encoding: 'utf-8' });
     if (result.status !== 0 && result.stderr !== '') {
         const errorMessage = `ERROR MESSAGE: ${result.error ? result.error.toString() : ''} ${result.stderr ? result.stderr.toString() : ''}. / FULL RESPONSE: ${JSON.stringify(result)}`;
-        core_1.error(`ERROR when executing the command ${command} with params ${params.toString()}`);
-        core_1.error(errorMessage);
+        core_1.info(`ERROR when executing the command ${command} with params ${params.toString()}`);
         core_1.setFailed(errorMessage);
     }
     core_1.info(`SUCCESSFUL execution of the command ${command} with params ${params.toString()}`);

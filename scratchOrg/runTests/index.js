@@ -34,11 +34,14 @@ const run = async () => {
     // check the results and show the class names which are not covered enough
     const parsedResult = JSON.parse(result);
     let classesNotMeetingCoverage = undefined;
-    // if it was not successful, send an error, otherwise check coverage of each test
+    // if it was not successful and we found tests, send an error, otherwise check coverage of each test
     if (parsedResult.status !== 0) {
-        const errorMessage = `ERROR when running the tests: ${parsedResult.name} // ${parsedResult.message}`;
-        core_1.error(`\u001b[38;2;255;0;0m${errorMessage}`);
-        core_1.setFailed(errorMessage);
+        if (parsedResult.name !== 'InvalidAsyncTestJobNoneFound') {
+            core_1.setFailed(`\u001b[38;2;255;0;0mERROR when running the tests: ${parsedResult.name} // ${parsedResult.message}`);
+        }
+        else {
+            core_1.info(`\u001b[35m*** There were no tests to run. Continue with the process ***`);
+        }
     }
     else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,11 +51,9 @@ const run = async () => {
             }
         });
         if (classesNotMeetingCoverage) {
-            const errorMessage = `\u001b[38;2;255;0;0mThe minimun test coverage for each class in the project must be equal or higher than ${minimunTestCoverage}.`;
             core_1.info(`\n\u001b[35m*** THESE CLASSES DON'T MEET THE MINIMUN COVERED PERCENTAGE ${minimunTestCoverage} ***\n`);
             core_1.info(classesNotMeetingCoverage);
-            core_1.error(errorMessage);
-            core_1.setFailed(errorMessage);
+            core_1.setFailed(`\u001b[38;2;255;0;0mThe minimun test coverage for each class in the project must be equal or higher than ${minimunTestCoverage}.`);
         }
         else {
             core_1.info(`\u001b[35m*** Tests ran successfully and met the coverage requirements (${minimunTestCoverage}%). ***`);
@@ -115,8 +116,7 @@ const execSync = (command, params = []) => {
     const result = child_process_1.spawnSync(command, params, { encoding: 'utf-8' });
     if (result.status !== 0 && result.stderr !== '') {
         const errorMessage = `ERROR MESSAGE: ${result.error ? result.error.toString() : ''} ${result.stderr ? result.stderr.toString() : ''}. / FULL RESPONSE: ${JSON.stringify(result)}`;
-        core_1.error(`ERROR when executing the command ${command} with params ${params.toString()}`);
-        core_1.error(errorMessage);
+        core_1.info(`ERROR when executing the command ${command} with params ${params.toString()}`);
         core_1.setFailed(errorMessage);
     }
     core_1.info(`SUCCESSFUL execution of the command ${command} with params ${params.toString()}`);
