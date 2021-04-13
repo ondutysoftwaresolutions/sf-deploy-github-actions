@@ -165,20 +165,27 @@ const getFailedTestResult = (failures) => {
     const result = [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     failures.forEach((fail) => {
-        result.push(`\u001b[35mTest Class: ${fail.name}`);
-        result.push(`\u001b[38;2;163;132;75mMethod: ${fail.methodName}`);
-        result.push(`ERROR: ${fail.message} \n`);
+        result.push(`\u001b[35mTest Class: ${fail.name || fail.Name}`);
+        result.push(`\u001b[38;2;163;132;75mMethod: ${fail.methodName || fail.MethodName}`);
+        result.push(`ERROR: ${fail.message || fail.Message} \n`);
     });
     return result;
 };
 exports.getFailedTestResult = getFailedTestResult;
 // eslint-disable-next-line
 const logTestErrors = (result) => {
+    const numberFailures = (result.numberTestError || 0) + (result.summary ? result.summary.failing : 0);
     // if it's test failures
-    if (result.numberTestErrors > 0) {
-        core_1.info(`*** FAILED TESTS (${result.numberTestErrors} tests) ***\n`);
+    if (numberFailures > 0) {
+        core_1.info(`*** FAILED TESTS (${numberFailures} tests) ***\n`);
+        const failuresArray = result.details && result.details.runTestResult
+            ? result.details.runTestResult.failures
+            : result.tests
+                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    result.tests.filter((tst) => tst.Outcome === 'Fail')
+                : [];
         // get the failure class names
-        const failed = getFailedTestResult(result.details.runTestResult.failures);
+        const failed = getFailedTestResult(failuresArray);
         failed.forEach((fail) => {
             core_1.info(fail);
         });
