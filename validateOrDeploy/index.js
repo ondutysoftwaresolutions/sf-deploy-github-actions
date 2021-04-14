@@ -165,7 +165,7 @@ const getFailedTestResult = (failures) => {
     const result = [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     failures.forEach((fail) => {
-        result.push(`\u001b[35mTest Class: ${fail.name || fail.Name}`);
+        result.push(`\u001b[35mTest Class: ${fail.name || fail.ApexClass.Name}`);
         result.push(`\u001b[38;2;163;132;75mMethod: ${fail.methodName || fail.MethodName}`);
         result.push(`ERROR: ${fail.message || fail.Message} \n`);
     });
