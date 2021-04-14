@@ -14,6 +14,7 @@ exports.runTests = void 0;
 const core_1 = __nccwpck_require__(186);
 const execSync_1 = __importDefault(__nccwpck_require__(205));
 const constants_1 = __nccwpck_require__(122);
+const processValidationResult_1 = __nccwpck_require__(94);
 const run = async () => {
     const minimunTestCoverage = core_1.getInput('minimum_test_coverage') || constants_1.DEFAULT_MINIMUM_TEST_COVERAGE;
     const scratchOrgName = core_1.getInput('scratch_org_name');
@@ -44,19 +45,26 @@ const run = async () => {
         }
     }
     else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        parsedResult.result.coverage.coverage.forEach((test) => {
-            if (test.coveredPercent < minimunTestCoverage) {
-                classesNotMeetingCoverage += `- ${test.name}: ${test.coveredPercent}.\n`;
-            }
-        });
-        if (classesNotMeetingCoverage) {
-            core_1.info(`\n\u001b[35m*** THESE CLASSES DON'T MEET THE MINIMUN COVERED PERCENTAGE ${minimunTestCoverage} ***\n`);
-            core_1.info(classesNotMeetingCoverage);
-            core_1.setFailed(`\u001b[38;2;255;0;0mThe minimun test coverage for each class in the project must be equal or higher than ${minimunTestCoverage}.`);
+        if (parsedResult.result.summary.failing > 0) {
+            core_1.info('\u001b[38;2;255;0;0m*** Unsuccessful validation of the Package ***\n');
+            processValidationResult_1.logTestErrors(parsedResult.result);
+            core_1.setFailed('The validation of the package failed.');
         }
         else {
-            core_1.info(`\u001b[35m*** Tests ran successfully and met the coverage requirements (${minimunTestCoverage}%). ***`);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            parsedResult.result.coverage.coverage.forEach((test) => {
+                if (test.coveredPercent < minimunTestCoverage) {
+                    classesNotMeetingCoverage += `- ${test.name}: ${test.coveredPercent}.\n`;
+                }
+            });
+            if (classesNotMeetingCoverage) {
+                core_1.info(`\n\u001b[35m*** THESE CLASSES DON'T MEET THE MINIMUN COVERED PERCENTAGE ${minimunTestCoverage} ***\n`);
+                core_1.info(classesNotMeetingCoverage);
+                core_1.setFailed(`\u001b[38;2;255;0;0mThe minimun test coverage for each class in the project must be equal or higher than ${minimunTestCoverage}.`);
+            }
+            else {
+                core_1.info(`\u001b[35m*** Tests ran successfully and met the coverage requirements (${minimunTestCoverage}%). ***`);
+            }
         }
     }
 };
@@ -123,6 +131,63 @@ const execSync = (command, params = []) => {
     return result.stdout;
 };
 exports.default = execSync;
+
+
+/***/ }),
+
+/***/ 94:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
+const core_1 = __nccwpck_require__(186);
+const getFailedTestResult = (failures) => {
+    const result = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    failures.forEach((fail) => {
+        result.push(`\u001b[35mTest Class: ${fail.name || fail.Name}`);
+        result.push(`\u001b[38;2;163;132;75mMethod: ${fail.methodName || fail.MethodName}`);
+        result.push(`ERROR: ${fail.message || fail.Message} \n`);
+    });
+    return result;
+};
+exports.getFailedTestResult = getFailedTestResult;
+// eslint-disable-next-line
+const logTestErrors = (result) => {
+    const numberFailures = (result.numberTestError || 0) + (result.summary ? result.summary.failing : 0);
+    // if it's test failures
+    if (numberFailures > 0) {
+        core_1.info(`*** FAILED TESTS (${numberFailures} tests) ***\n`);
+        const failuresArray = result.details && result.details.runTestResult
+            ? result.details.runTestResult.failures
+            : result.tests
+                ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    result.tests.filter((tst) => tst.Outcome === 'Fail')
+                : [];
+        // get the failure class names
+        const failed = getFailedTestResult(failuresArray);
+        failed.forEach((fail) => {
+            core_1.info(fail);
+        });
+    }
+};
+exports.logTestErrors = logTestErrors;
+// eslint-disable-next-line
+const processValidationResult = (result) => {
+    // if it was a success set the job id as the output
+    if (result.success) {
+        core_1.info(`\u001b[35m*** Successful validation of the Package. JOB ID: ${result.id} ***`);
+        core_1.setOutput('job_id', result.id);
+    }
+    else {
+        core_1.info('\u001b[38;2;255;0;0m*** Unsuccessful validation of the Package ***\n');
+        // if it's test failures
+        logTestErrors(result);
+        core_1.setFailed('The validation of the package failed.');
+    }
+};
+exports.processValidationResult = processValidationResult;
 
 
 /***/ }),
