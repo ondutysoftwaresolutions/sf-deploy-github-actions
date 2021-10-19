@@ -31,7 +31,6 @@ const run = async () => {
         '--testlevel',
         constants_1.TestLevel.LOCAL_TEST,
     ]);
-    core_1.info(`*** RESULT: ${result}`);
     // check the results and show the class names which are not covered enough
     const parsedResult = JSON.parse(result);
     let classesNotMeetingCoverage = undefined;
