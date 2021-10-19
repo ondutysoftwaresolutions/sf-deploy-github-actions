@@ -23,7 +23,7 @@ const run = async () => {
     const parsedResult = JSON.parse(result);
     // if it was not successful, send an error, otherwise show success and continue
     if (parsedResult.status !== 0) {
-        core_1.setFailed(`\u001b[38;2;255;0;0mERROR when pushing the changes: ${parsedResult.name} // ${parsedResult.message} // ${parsedResult.error}`);
+        core_1.setFailed(`\u001b[38;2;255;0;0mERROR when pushing the changes: ${parsedResult.name} // ${parsedResult.message} // ${JSON.stringify(parsedResult.result)}`);
     }
     else {
         core_1.info(`\u001b[35m*** Changes were deployed successfully to the Scratch Org '${scratchOrgName}'. ***`);
