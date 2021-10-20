@@ -37,7 +37,14 @@ const run = async () => {
     // if it was not successful and we found tests, send an error, otherwise check coverage of each test
     if (parsedResult.status !== 0) {
         if (parsedResult.name !== 'InvalidAsyncTestJobNoneFound') {
-            core_1.setFailed(`\u001b[38;2;255;0;0mERROR when running the tests: ${parsedResult.name} // ${parsedResult.message}`);
+            if (parsedResult.result.summary.failing > 0) {
+                core_1.info('\u001b[38;2;255;0;0m*** Unsuccessful validation of the Package ***\n');
+                processValidationResult_1.logTestErrors(parsedResult.result);
+                core_1.setFailed('The validation of the package failed.');
+            }
+            else {
+                core_1.setFailed(`\u001b[38;2;255;0;0mERROR when running the tests: ${parsedResult.name} // ${parsedResult.message}`);
+            }
         }
         else {
             core_1.info(`\u001b[35m*** There were no tests to run. Continue with the process ***`);
