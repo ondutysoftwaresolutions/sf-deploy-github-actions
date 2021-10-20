@@ -33,7 +33,7 @@ const run = async () => {
     ]);
     // check the results and show the class names which are not covered enough
     const parsedResult = JSON.parse(result);
-    core_1.info(`Result: ${parsedResult}`);
+    core_1.info(`Result: ${result}`);
     let classesNotMeetingCoverage = undefined;
     // if it was not successful and we found tests, send an error, otherwise check coverage of each test
     if (parsedResult.status !== 0) {
