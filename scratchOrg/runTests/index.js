@@ -163,7 +163,7 @@ const getFailedTestResult = (failures) => {
     failures.forEach((fail) => {
         result.push(`\u001b[35mTest Class: ${fail.name || fail.ApexClass.Name}`);
         result.push(`\u001b[38;2;163;132;75mMethod: ${fail.methodName || fail.MethodName}`);
-        result.push(`ERROR: ${fail.message || fail.Message} \n`);
+        result.push(`ERROR: ${fail.message || fail.Message} / ${fail.StackTrace} \n`);
     });
     return result;
 };
