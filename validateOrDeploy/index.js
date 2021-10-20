@@ -69,8 +69,9 @@ const run = async () => {
         }
     }
     else {
-        processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
         core_1.setFailed('The Deployment of the package failed');
+        core_1.info('\nCOMPONENTS WITH ERRORS: \n');
+        processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
     }
 };
 exports.validateDeployment = run;
@@ -150,10 +151,10 @@ const execSync = (command, params = []) => {
     const result = child_process_1.spawnSync(command, params, { encoding: 'utf-8' });
     if (result.status !== 0 && result.stderr !== '') {
         const errorMessage = `ERROR MESSAGE: ${result.error ? result.error.toString() : ''} ${result.stderr ? result.stderr.toString() : ''}. / FULL RESPONSE: ${JSON.stringify(result)}`;
-        core_1.info(`ERROR when executing the command ${command} with params ${params.toString()}`);
+        core_1.info(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
         core_1.setFailed(errorMessage);
     }
-    core_1.info(`SUCCESSFUL execution of the command ${command} with params ${params.toString()}`);
+    core_1.info(`SUCCESSFUL execution of the command ${command} with params ${params.toString()} \n`);
     return result.stdout;
 };
 exports.default = execSync;
