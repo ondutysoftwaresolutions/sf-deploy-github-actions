@@ -49,21 +49,28 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
-    // if it was a deployment, check the tests results if need it.
-    // if it was a validation, process the results and return the job id
-    if (configuration.deploy) {
-        if (configuration.testLevel && configuration.testLevel !== constants_1.TestLevel.NO_TEST) {
-            if (!parsedResult.result.success) {
-                processValidationResult_1.logTestErrors(parsedResult.result);
-                core_1.setFailed('The Deployment of the package failed.');
+    // if it was a success (status = 0)
+    if (parsedResult.status === 0) {
+        // if it was a deployment, check the tests results if need it.
+        // if it was a validation, process the results and return the job id
+        if (configuration.deploy) {
+            if (configuration.testLevel && configuration.testLevel !== constants_1.TestLevel.NO_TEST) {
+                if (!parsedResult.result.success) {
+                    processValidationResult_1.logTestErrors(parsedResult.result);
+                    core_1.setFailed('The Deployment of the package failed.');
+                }
             }
+            core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
+            core_1.setOutput('job_id', '0');
         }
-        core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
-        core_1.setOutput('job_id', '0');
+        else {
+            // process the result to set the output or the errors
+            processValidationResult_1.processValidationResult(parsedResult.result);
+        }
     }
     else {
-        // process the result to set the output or the errors
-        processValidationResult_1.processValidationResult(parsedResult.result);
+        processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
+        core_1.setFailed('The Deployment of the package failed');
     }
 };
 exports.validateDeployment = run;
@@ -159,8 +166,17 @@ exports.default = execSync;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
+exports.printDeploymentErrorsResult = exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
 const core_1 = __nccwpck_require__(186);
+const printDeploymentErrorsResult = (errors) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    errors.forEach((err) => {
+        core_1.info(`\u001b[35mName: ${err.fullName}`);
+        core_1.info(`\u001b[35mType: ${err.type}`);
+        core_1.info(`ERROR: ${err.error} \n`);
+    });
+};
+exports.printDeploymentErrorsResult = printDeploymentErrorsResult;
 const getFailedTestResult = (failures) => {
     const result = [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

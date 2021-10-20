@@ -31,7 +31,6 @@ const run = async () => {
         '--testlevel',
         constants_1.TestLevel.LOCAL_TEST,
     ]);
-    core_1.info(`*** RESULT: ${result}`);
     // check the results and show the class names which are not covered enough
     const parsedResult = JSON.parse(result);
     let classesNotMeetingCoverage = undefined;
@@ -140,8 +139,17 @@ exports.default = execSync;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
+exports.printDeploymentErrorsResult = exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
 const core_1 = __nccwpck_require__(186);
+const printDeploymentErrorsResult = (errors) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    errors.forEach((err) => {
+        core_1.info(`\u001b[35mName: ${err.fullName}`);
+        core_1.info(`\u001b[35mType: ${err.type}`);
+        core_1.info(`ERROR: ${err.error} \n`);
+    });
+};
+exports.printDeploymentErrorsResult = printDeploymentErrorsResult;
 const getFailedTestResult = (failures) => {
     const result = [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
