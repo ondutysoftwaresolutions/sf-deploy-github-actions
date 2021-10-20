@@ -49,6 +49,7 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
+<<<<<<< HEAD
     // if it was a success (status = 0)
     if (parsedResult.status === 0) {
         // if it was a deployment, check the tests results if need it.
@@ -59,6 +60,16 @@ const run = async () => {
                     processValidationResult_1.logTestErrors(parsedResult.result);
                     core_1.setFailed('The Deployment of the package failed.');
                 }
+=======
+    core_1.info(`*** ${result}`);
+    // if it was a deployment, check the tests results if need it.
+    // if it was a validation, process the results and return the job id
+    if (configuration.deploy) {
+        if (configuration.testLevel && configuration.testLevel !== constants_1.TestLevel.NO_TEST) {
+            if (!parsedResult.result.success) {
+                processValidationResult_1.logTestErrors(parsedResult.result);
+                core_1.setFailed('The Deployment of the package failed.');
+>>>>>>> 3c2a6aa633cadf9d4e0a115e02a174435c8f6889
             }
             core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
             core_1.setOutput('job_id', '0');
