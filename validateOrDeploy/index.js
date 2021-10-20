@@ -49,6 +49,7 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
+    core_1.info(`*** ${result}`);
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
     if (configuration.deploy) {
