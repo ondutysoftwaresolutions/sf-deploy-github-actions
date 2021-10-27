@@ -49,6 +49,7 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
+    console.log('Result >>>> ' + result);
     // if it was a success (status = 0)
     if (parsedResult.status === 0) {
         // if it was a deployment, check the tests results if need it.
