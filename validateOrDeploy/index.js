@@ -49,13 +49,14 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
-    console.log('Result >>>> ' + result);
     // if it was a success (status = 0)
     if (parsedResult.status === 0) {
         // if it was a deployment, check the tests results if need it.
         // if it was a validation, process the results and return the job id
         if (configuration.deploy) {
-            if (configuration.testLevel && configuration.testLevel !== constants_1.TestLevel.NO_TEST) {
+            if (configuration.testLevel &&
+                configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
+                Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
                 if (!parsedResult.result.success) {
                     processValidationResult_1.logTestErrors(parsedResult.result);
                     core_1.setFailed('The Deployment of the package failed.');
