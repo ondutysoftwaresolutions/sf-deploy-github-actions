@@ -172,7 +172,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.printDeploymentErrorsResult = exports.getFailedTestResult = exports.processValidationResult = exports.logTestErrors = void 0;
 const core_1 = __nccwpck_require__(186);
 const printDeploymentErrorsResult = (errors) => {
-    core_1.info(`errors: ${JSON.stringify(errors)}`);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     errors.forEach((err) => {
         core_1.info(`\u001b[35mName: ${err.fullName}`);
