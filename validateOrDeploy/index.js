@@ -59,7 +59,7 @@ const run = async () => {
                 Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
                 if (!parsedResult.result.success) {
                     processValidationResult_1.logTestErrors(parsedResult.result);
-                    core_1.setFailed('The Deployment of the package failed.');
+                    core_1.setFailed('The Deployment of the package failed 11.');
                 }
             }
             core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
