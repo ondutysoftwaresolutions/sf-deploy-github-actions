@@ -58,7 +58,6 @@ const run = async () => {
                 configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
                 Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
                 if (!parsedResult.result.success) {
-                    core_1.info(`*** ${JSON.stringify(parsedResult.result)}`);
                     processValidationResult_1.logTestErrors(parsedResult.result);
                     core_1.setFailed('The Deployment of the package failed.');
                 }
@@ -194,7 +193,7 @@ const getFailedTestResult = (failures) => {
 exports.getFailedTestResult = getFailedTestResult;
 // eslint-disable-next-line
 const logTestErrors = (result) => {
-    const numberFailures = (result.numberTestError || 0) + (result.summary ? result.summary.failing : 0);
+    const numberFailures = (result.numberTestErrors || 0) + (result.summary ? result.summary.failing : 0);
     // if it's test failures
     if (numberFailures > 0) {
         core_1.info(`*** FAILED TESTS (${numberFailures} tests) ***\n`);
