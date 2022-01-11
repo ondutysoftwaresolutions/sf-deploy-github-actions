@@ -170,7 +170,7 @@ const getFailedTestResult = (failures) => {
 exports.getFailedTestResult = getFailedTestResult;
 // eslint-disable-next-line
 const logTestErrors = (result) => {
-    const numberFailures = (result.numberTestError || 0) + (result.summary ? result.summary.failing : 0);
+    const numberFailures = (result.numberTestErrors || 0) + (result.summary ? result.summary.failing : 0);
     // if it's test failures
     if (numberFailures > 0) {
         core_1.info(`*** FAILED TESTS (${numberFailures} tests) ***\n`);

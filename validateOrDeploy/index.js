@@ -49,6 +49,7 @@ const run = async () => {
     const result = execSync_1.default(constants_1.Commands.SFDX, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
+    let failed = false;
     // if it was a success (status = 0)
     if ((parsedResult.status === 0 && configuration.orgType === constants_1.OrgType.SANDBOX) || parsedResult.status !== 0) {
         // if it was a deployment, check the tests results if need it.
@@ -59,11 +60,14 @@ const run = async () => {
                 Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
                 if (!parsedResult.result.success) {
                     processValidationResult_1.logTestErrors(parsedResult.result);
+                    failed = true;
                     core_1.setFailed('The Deployment of the package failed.');
                 }
             }
-            core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
-            core_1.setOutput('job_id', '0');
+            if (!failed) {
+                core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
+                core_1.setOutput('job_id', '0');
+            }
         }
         else {
             // process the result to set the output or the errors
