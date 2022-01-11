@@ -50,8 +50,7 @@ const run = async () => {
     // parsed the result
     const parsedResult = JSON.parse(result);
     // if it was a success (status = 0)
-    if ((parsedResult.status === 0 && configuration.orgType === constants_1.OrgType.SCRATCH) ||
-        configuration.orgType !== constants_1.OrgType.SCRATCH) {
+    if ((parsedResult.status === 0 && configuration.orgType === constants_1.OrgType.SANDBOX) || parsedResult.status !== 0) {
         // if it was a deployment, check the tests results if need it.
         // if it was a validation, process the results and return the job id
         if (configuration.deploy) {
