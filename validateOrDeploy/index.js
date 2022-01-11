@@ -58,8 +58,9 @@ const run = async () => {
                 configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
                 Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
                 if (!parsedResult.result.success) {
+                    core_1.info(`*** ${JSON.stringify(parsedResult.result)}`);
                     processValidationResult_1.logTestErrors(parsedResult.result);
-                    core_1.setFailed('The Deployment of the package failed 11.');
+                    core_1.setFailed('The Deployment of the package failed.');
                 }
             }
             core_1.info(`\u001b[35m*** Successful Deployment of the Package. ***`);
