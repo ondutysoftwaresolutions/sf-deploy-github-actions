@@ -74,6 +74,7 @@ const run = async () => {
     else {
         core_1.setFailed('The Deployment of the package failed');
         core_1.info('\nCOMPONENTS WITH ERRORS: \n');
+        core_1.info('\nRESULT: \n' + JSON.stringify(parsedResult);
         processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
     }
 };
