@@ -54,21 +54,22 @@ const run = async () => {
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
     if (configuration.deploy) {
-        if (configuration.testLevel &&
+        // if it's a failure from the call
+        if (parsedResult.status !== 0) {
+            core_1.setFailed('The Deployment of the package failed');
+            core_1.info('\nCOMPONENTS WITH ERRORS: \n');
+            failed = true;
+            processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
+        }
+        // check the tests
+        if (!failed &&
+            configuration.testLevel &&
             configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
             Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
-            if (parsedResult.status !== 0) {
-                core_1.setFailed('The Deployment of the package failed');
-                core_1.info('\nCOMPONENTS WITH ERRORS: \n');
+            if (!parsedResult.result.success) {
+                processValidationResult_1.logTestErrors(parsedResult.result);
                 failed = true;
-                processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
-            }
-            else {
-                if (!parsedResult.result.success) {
-                    processValidationResult_1.logTestErrors(parsedResult.result);
-                    failed = true;
-                    core_1.setFailed('The Deployment of the package failed.');
-                }
+                core_1.setFailed('The Deployment of the package failed.');
             }
         }
         if (!failed) {
