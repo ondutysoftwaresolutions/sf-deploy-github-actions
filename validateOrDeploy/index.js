@@ -56,10 +56,12 @@ const run = async () => {
     if (configuration.deploy) {
         // if it's a failure from the call
         if (parsedResult.status !== 0) {
-            core_1.setFailed('The Deployment of the package failed');
-            core_1.info('\nCOMPONENTS WITH ERRORS: \n');
-            failed = true;
-            processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
+            if (parsedResult.result.numberComponentErrors > 0) {
+                core_1.setFailed('The Deployment of the package failed');
+                core_1.info('\nCOMPONENTS WITH ERRORS: \n');
+                failed = true;
+                processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
+            }
         }
         // check the tests
         if (!failed &&
