@@ -50,7 +50,6 @@ const run = async () => {
     // parsed the result
     const parsedResult = JSON.parse(result);
     let failed = false;
-    core_1.info(`Result >>>> ${JSON.stringify(parsedResult)}`);
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
     if (configuration.deploy) {
@@ -62,6 +61,7 @@ const run = async () => {
                 failed = true;
                 processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
             }
+            core_1.info(`Result >>>> ${JSON.stringify(parsedResult)}`);
         }
         // check the tests
         if (!failed &&
@@ -84,6 +84,7 @@ const run = async () => {
             core_1.setFailed('The Deployment of the package failed');
             core_1.info('\nCOMPONENTS WITH ERRORS: \n');
             processValidationResult_1.printDeploymentErrorsResult(parsedResult.result);
+            core_1.info(`Result >>>> ${JSON.stringify(parsedResult)}`);
         }
         else {
             // process the result to set the output or the errors
