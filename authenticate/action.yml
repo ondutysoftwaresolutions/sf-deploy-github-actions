@@ -2,7 +2,7 @@ name: 'authenticate'
 description: 'Authenticate with Salesforce Org'
 author: 'Pablo Martinez'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   app_client_id:

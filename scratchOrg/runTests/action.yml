@@ -2,7 +2,7 @@ name: 'runTestsInScratchOrg'
 description: 'Run the tests in the scratch org using the sent name.'
 author: 'Pablo Martinez'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   scratch_org_name:

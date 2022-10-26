@@ -1,7 +1,7 @@
 name: 'quickDeploymentPackage'
 description: 'Quick deploy the package validated in the previous step'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   job_id:

@@ -2,7 +2,7 @@ name: 'pushToScratchOrg'
 description: 'Push the package content to the scratch org using the sent name'
 author: 'Pablo Martinez'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   scratch_org_name:

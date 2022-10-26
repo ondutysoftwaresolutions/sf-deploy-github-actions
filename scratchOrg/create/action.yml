@@ -2,7 +2,7 @@ name: 'createScratchOrg'
 description: 'Create the scratch org using the sent definition file'
 author: 'Pablo Martinez'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   scratch_definition_path:

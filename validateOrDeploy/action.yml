@@ -2,7 +2,7 @@ name: 'validateOrDeployPackage'
 description: 'Validate or Deploy the metadata in the Org (Sandbox/Production) and choose whether to run tests or not'
 author: 'Pablo Martinez'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: './index.js'
 inputs:
   package_path:
