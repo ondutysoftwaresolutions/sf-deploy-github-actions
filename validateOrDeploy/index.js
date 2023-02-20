@@ -28,7 +28,7 @@ const run = async () => {
         params.push('force:source:deploy', '--manifest');
     }
     // add the package
-    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json');
+    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json', '--ignorewarnings');
     // check if it's not a deploy, then it's a validation, and the Job Id will be output to use in a quick deploy
     if (!configuration.deploy) {
         params.push('--checkonly');
