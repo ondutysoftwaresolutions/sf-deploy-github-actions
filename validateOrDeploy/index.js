@@ -48,7 +48,8 @@ const run = async () => {
     // execute the validation in the SF instance of the package
     const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, params);
     
-    // parsed the result
+    (0, processValidationResult_1.printDeploymentErrorsResult)(result);
+    
     let failed = false;
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
