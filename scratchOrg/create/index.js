@@ -19,7 +19,7 @@ const run = async () => {
     const nameOrg = `${constants_1.DEFAULT_BASE_ALIAS_SCRATCH_ORG}_${Math.floor(Math.random() * 1000000).toString()}`;
     (0, core_1.info)('*** Creating Scratch Org ***');
     // create the org
-    const result = (0, execSync_1.default)(constants_1.Commands.SFDX, [
+    const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, [
         'force:org:create',
         '--definitionfile',
         scratchDefPath,
@@ -66,7 +66,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";

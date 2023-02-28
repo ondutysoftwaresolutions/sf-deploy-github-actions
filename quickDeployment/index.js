@@ -16,7 +16,7 @@ const execSync_1 = __importDefault(__nccwpck_require__(205));
 const constants_1 = __nccwpck_require__(500);
 const run = async () => {
     (0, core_1.info)('*** Deployment of the Package started ***');
-    const result = (0, execSync_1.default)(constants_1.Commands.SFDX, [
+    const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, [
         'force:source:deploy',
         '--targetusername',
         constants_1.DEFAULT_ALIAS_SF_INSTANCE,
@@ -45,7 +45,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";

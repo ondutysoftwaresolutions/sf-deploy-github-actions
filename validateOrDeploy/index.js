@@ -46,7 +46,7 @@ const run = async () => {
         }
     }
     // execute the validation in the SF instance of the package
-    const result = (0, execSync_1.default)(constants_1.Commands.SFDX, params);
+    const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, params);
     // parsed the result
     const parsedResult = JSON.parse(result);
     let failed = false;
@@ -140,7 +140,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";

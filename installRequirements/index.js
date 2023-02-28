@@ -33,11 +33,6 @@ const run = async () => {
         '1',
     ]);
     (0, core_1.info)('*** SFDX Decompressed Successfully ***');
-    // run the install
-    //(0, execSync_1.default)('./sfdx-cli/install');
-    // add the sfdx to the path
-    // (0, execSync_1.default)(constants_1.Commands.EXPORT, [`PATH=~/${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/bin:$PATH`]);
-    // (0, core_1.info)('*** SFDX Added to the PATH Successfully ***');
 };
 exports.installRequirement = run;
 run();
@@ -78,7 +73,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";

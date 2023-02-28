@@ -18,7 +18,7 @@ const run = async () => {
     const scratchOrgName = (0, core_1.getInput)('scratch_org_name');
     (0, core_1.info)('*** Deleting Scratch Org ***');
     // delete the org
-    const result = (0, execSync_1.default)(constants_1.Commands.SFDX, [
+    const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, [
         'force:org:delete',
         '--targetusername',
         scratchOrgName,
@@ -55,7 +55,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";

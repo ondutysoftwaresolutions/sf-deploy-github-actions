@@ -40,7 +40,7 @@ const run = async () => {
     const instanceurl = login.orgType === constants_1.OrgType.SANDBOX ? constants_1.SF_URLs.SANDBOX : constants_1.SF_URLs.PRODUCTION;
     (0, core_1.info)(`Connecting to: ${instanceurl}`);
     // login
-    (0, execSync_1.default)(constants_1.Commands.SFDX, [
+    (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, [
         'force:auth:jwt:grant',
         '--instanceurl',
         instanceurl,
@@ -117,7 +117,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "./sfdx-cli/bin/sfdx";
+    Commands["SFDX"] = "bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";
