@@ -48,32 +48,28 @@ const run = async () => {
     // execute the validation in the SF instance of the package
     const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, params);
     
-    (0, core_1.info)(`Result >>>> ${result}`);
-    (0, core_1.info)(`Result String >>>> ${JSON.stringify(result)}`);
-    
     // parsed the result
-    const parsedResult = JSON.parse(result);
     let failed = false;
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
     if (configuration.deploy) {
         // if it's a failure from the call
-        if (parsedResult.status !== 0) {
-            if (parsedResult.result.numberComponentErrors > 0 || parsedResult.name === 'DeployFailed') {
+        if (result.status !== 0) {
+            if (result.result.numberComponentErrors > 0 || result.name === 'DeployFailed') {
                 (0, core_1.setFailed)('The Deployment of the package failed');
                 (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
                 failed = true;
-                (0, processValidationResult_1.printDeploymentErrorsResult)(parsedResult.result);
+                (0, processValidationResult_1.printDeploymentErrorsResult)(result.result);
             }
-            (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
+            (0, core_1.info)(`Result >>>> ${result}`);
         }
         // check the tests
         if (!failed &&
             configuration.testLevel &&
             configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
-            Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
-            if (!parsedResult.result.success) {
-                (0, processValidationResult_1.logTestErrors)(parsedResult.result);
+            Object.prototype.hasOwnProperty.call(result.result, 'success')) {
+            if (!result.result.success) {
+                (0, processValidationResult_1.logTestErrors)(result.result);
                 failed = true;
                 (0, core_1.setFailed)('The Deployment of the package failed.');
             }
@@ -84,15 +80,15 @@ const run = async () => {
         }
     }
     else {
-        if (parsedResult.status !== 0) {
+        if (result.status !== 0) {
             (0, core_1.setFailed)('The Deployment of the package failed');
             (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
-            (0, processValidationResult_1.printDeploymentErrorsResult)(parsedResult.result);
-            (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
+            (0, processValidationResult_1.printDeploymentErrorsResult)(result.result);
+            (0, core_1.info)(`Result >>>> ${JSON.stringify(result)}`);
         }
         else {
             // process the result to set the output or the errors
-            (0, processValidationResult_1.processValidationResult)(parsedResult.result);
+            (0, processValidationResult_1.processValidationResult)(result.result);
         }
     }
 };
