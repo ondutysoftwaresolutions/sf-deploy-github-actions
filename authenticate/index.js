@@ -117,7 +117,7 @@ var TestLevel;
 })(TestLevel = exports.TestLevel || (exports.TestLevel = {}));
 var Commands;
 (function (Commands) {
-    Commands["SFDX"] = "sfdx";
+    Commands["SFDX"] = "./sfdx-cli/bin/sfdx";
     Commands["OPEN_SSL"] = "openssl";
     Commands["WGET"] = "wget";
     Commands["MKDIR"] = "mkdir";
