@@ -36,7 +36,7 @@ const run = async () => {
     // run the install
     //(0, execSync_1.default)('./sfdx-cli/install');
     // add the sfdx to the path
-    (0, execSync_1.default)(constants_1.Commands.EXPORT, [`PATH=./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/bin:$PATH`]);
+    (0, execSync_1.default)(constants_1.Commands.EXPORT, [`PATH=~/${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/bin:$PATH`]);
     (0, core_1.info)('*** SFDX Added to the PATH Successfully ***');
 };
 exports.installRequirement = run;
