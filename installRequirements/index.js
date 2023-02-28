@@ -56,7 +56,7 @@ class Download {
     sfdx_filename;
     constructor(url, filename) {
         this.sfdx_url = url || 'https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable';
-        this.sfdx_filename = filename || 'sfdx-linux-x64.tar.gz';
+        this.sfdx_filename = filename || 'sfdx-linux-x64.tar.xz';
     }
 }
 exports["default"] = Download;
