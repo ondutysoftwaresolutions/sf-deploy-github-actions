@@ -34,10 +34,10 @@ const run = async () => {
     ]);
     (0, core_1.info)('*** SFDX Decompressed Successfully ***');
     // run the install
-    (0, execSync_1.default)('./sfdx-cli/install');
+    //(0, execSync_1.default)('./sfdx-cli/install');
     // add the sfdx to the path
     // execSync(Commands.EXPORT, [`PATH=./${DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/$(pwd):$PATH`]);
-    (0, core_1.info)('*** SFDX Installed Successfully ***');
+    //(0, core_1.info)('*** SFDX Installed Successfully ***');
 };
 exports.installRequirement = run;
 run();
