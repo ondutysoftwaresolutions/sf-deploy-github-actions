@@ -28,7 +28,7 @@ const run = async () => {
         params.push('force:source:deploy', '--manifest');
     }
     // add the package
-    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json', '--ignorewarnings');
+    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json');
     // check if it's not a deploy, then it's a validation, and the Job Id will be output to use in a quick deploy
     if (!configuration.deploy) {
         params.push('--checkonly');
@@ -47,9 +47,7 @@ const run = async () => {
     }
     // execute the validation in the SF instance of the package
     const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, params);
-    
-    (0, core_1.info)(`Result >>>> ${result.result}`);
-    
+        
     let failed = false;
     // if it was a deployment, check the tests results if need it.
     // if it was a validation, process the results and return the job id
