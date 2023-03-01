@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.validateDeployment = void 0;
 const core_1 = __nccwpck_require__(186);
-const execSync_1 = __importDefault(__nccwpck_require__(205));
+const exec_1 = __importDefault(__nccwpck_require__(771));
 const constants_1 = __nccwpck_require__(500);
 const Deployment_1 = __importDefault(__nccwpck_require__(552));
 const processValidationResult_1 = __nccwpck_require__(94);
@@ -28,7 +28,7 @@ const run = async () => {
         params.push('force:source:deploy', '--manifest');
     }
     // add the package
-    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json');
+    params.push(configuration.packageToDeploy, '--targetusername', constants_1.DEFAULT_ALIAS_SF_INSTANCE, '--wait', configuration.waitTime, '--json', '--ignorewarnings');
     // check if it's not a deploy, then it's a validation, and the Job Id will be output to use in a quick deploy
     if (!configuration.deploy) {
         params.push('--checkonly');
@@ -46,50 +46,53 @@ const run = async () => {
         }
     }
     // execute the validation in the SF instance of the package
-    const result = (0, execSync_1.default)(`./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`, params);
-        
-    let failed = false;
-    // if it was a deployment, check the tests results if need it.
-    // if it was a validation, process the results and return the job id
-    if (configuration.deploy) {
-        // if it's a failure from the call
-        if (result.status !== 0) {
-            if (result.result.numberComponentErrors > 0 || result.name === 'DeployFailed') {
-                (0, core_1.setFailed)('The Deployment of the package failed');
-                (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
-                failed = true;
-                (0, processValidationResult_1.printDeploymentErrorsResult)(result.result);
+    const commandToExecute = `./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`;
+    (0, exec_1.default)(commandToExecute, params).then((result) => {
+        // parsed the result
+        const parsedResult = JSON.parse(result);
+        let failed = false;
+        // if it was a deployment, check the tests results if need it.
+        // if it was a validation, process the results and return the job id
+        if (configuration.deploy) {
+            // if it's a failure from the call
+            if (parsedResult.status !== 0) {
+                if (parsedResult.result.numberComponentErrors > 0 || parsedResult.name === 'DeployFailed') {
+                    (0, core_1.setFailed)('The Deployment of the package failed');
+                    (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
+                    failed = true;
+                    (0, processValidationResult_1.printDeploymentErrorsResult)(parsedResult.result);
+                }
+                (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
             }
-            (0, core_1.info)(`Result >>>> ${result}`);
-        }
-        // check the tests
-        if (!failed &&
-            configuration.testLevel &&
-            configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
-            Object.prototype.hasOwnProperty.call(result.result, 'success')) {
-            if (!result.result.success) {
-                (0, processValidationResult_1.logTestErrors)(result.result);
-                failed = true;
-                (0, core_1.setFailed)('The Deployment of the package failed.');
+            // check the tests
+            if (!failed &&
+                configuration.testLevel &&
+                configuration.testLevel !== constants_1.TestLevel.NO_TEST &&
+                Object.prototype.hasOwnProperty.call(parsedResult.result, 'success')) {
+                if (!parsedResult.result.success) {
+                    (0, processValidationResult_1.logTestErrors)(parsedResult.result);
+                    failed = true;
+                    (0, core_1.setFailed)('The Deployment of the package failed.');
+                }
             }
-        }
-        if (!failed) {
-            (0, core_1.info)(`\u001b[35m*** Successful Deployment of the Package. ***`);
-            (0, core_1.setOutput)('job_id', '0');
-        }
-    }
-    else {
-        if (result.status !== 0) {
-            (0, core_1.setFailed)('The Deployment of the package failed');
-            (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
-            (0, processValidationResult_1.printDeploymentErrorsResult)(result.result);
-            (0, core_1.info)(`Result >>>> ${JSON.stringify(result)}`);
+            if (!failed) {
+                (0, core_1.info)(`\u001b[35m*** Successful Deployment of the Package. ***`);
+                (0, core_1.setOutput)('job_id', '0');
+            }
         }
         else {
-            // process the result to set the output or the errors
-            (0, processValidationResult_1.processValidationResult)(result.result);
+            if (parsedResult.status !== 0) {
+                (0, core_1.setFailed)('The Deployment of the package failed');
+                (0, core_1.info)('\nCOMPONENTS WITH ERRORS: \n');
+                (0, processValidationResult_1.printDeploymentErrorsResult)(parsedResult.result);
+                (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
+            }
+            else {
+                // process the result to set the output or the errors
+                (0, processValidationResult_1.processValidationResult)(parsedResult.result);
+            }
         }
-    }
+    });
 };
 exports.validateDeployment = run;
 run();
@@ -165,7 +168,7 @@ exports.DEFAULT_MINIMUM_TEST_COVERAGE = 75;
 
 /***/ }),
 
-/***/ 205:
+/***/ 771:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -173,18 +176,27 @@ exports.DEFAULT_MINIMUM_TEST_COVERAGE = 75;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
-const execSync = (command, params = []) => {
-    const result = (0, child_process_1.spawnSync)(command, params, { encoding: 'utf-8', maxBuffer: 1024 * 10240 });
-    if (result.status !== 0 && result.stderr !== '') {
-        const errorMessage = `ERROR MESSAGE: ${result.error ? result.error.toString() : ''} ${result.stderr ? result.stderr.toString() : ''}. / FULL RESPONSE: ${JSON.stringify(result)}`;
-        (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
-        (0, core_1.setFailed)(errorMessage);
-    }
-    (0, core_1.info)(`SUCCESSFUL execution of the command ${command} with params ${params.toString()} \n`);
-    (0, core_1.info)(`STdout ${result.stdout}`);
-    return result.stdout;
+const exec = (command, params = []) => {
+    return new Promise((resolve, reject) => {
+        const cmd = (0, child_process_1.spawn)(command, params);
+        const bufferArray = [];
+        cmd.stdout.on('data', (data) => {
+            bufferArray.push(data);
+        });
+        cmd.stderr.on('data', (data) => {
+            const errorMessage = `ERROR MESSAGE: ${JSON.stringify(data)}`;
+            (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
+            (0, core_1.setFailed)(errorMessage);
+            reject(errorMessage);
+        });
+        cmd.on('close', () => {
+            const dataBuffer = Buffer.concat(bufferArray);
+            (0, core_1.info)(`SUCCESSFUL execution of the command ${command} with params ${params.toString()} \n`);
+            resolve(dataBuffer.toString());
+        });
+    });
 };
-exports["default"] = execSync;
+exports["default"] = exec;
 
 
 /***/ }),
