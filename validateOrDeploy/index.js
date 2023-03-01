@@ -174,7 +174,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(186);
 const child_process_1 = __nccwpck_require__(81);
 const execSync = (command, params = []) => {
-    const result = (0, child_process_1.spawnSync)(command, params, { encoding: 'utf-8' });
+    const result = (0, child_process_1.spawnSync)(command, params, { encoding: 'utf-8', maxBuffer: 1024 * 10240 });
     if (result.status !== 0 && result.stderr !== '') {
         const errorMessage = `ERROR MESSAGE: ${result.error ? result.error.toString() : ''} ${result.stderr ? result.stderr.toString() : ''}. / FULL RESPONSE: ${JSON.stringify(result)}`;
         (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
