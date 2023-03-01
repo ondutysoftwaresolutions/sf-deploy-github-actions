@@ -181,6 +181,7 @@ const execSync = (command, params = []) => {
         (0, core_1.setFailed)(errorMessage);
     }
     (0, core_1.info)(`SUCCESSFUL execution of the command ${command} with params ${params.toString()} \n`);
+    (0, core_1.info)(`STdout ${result.stdout}`);
     return result.stdout;
 };
 exports["default"] = execSync;
