@@ -51,7 +51,7 @@ const run = async () => {
         // parsed the result
         const parsedResult = JSON.parse(result);
 
-        info(`Result >>>> ${JSON.stringify(parsedResult)}`);
+        (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
         
         let failed = false;
         // if it was a deployment, check the tests results if need it.
