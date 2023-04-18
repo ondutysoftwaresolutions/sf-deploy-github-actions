@@ -193,11 +193,9 @@ const exec = (command, params = []) => {
             bufferError.push(data);
         });
         cmd.stderr.on('end', () => {
-            const dataBuffer = Buffer.concat(bufferError).toString();
-            const errorMessage = `ERROR MESSAGE: ${dataBuffer}`;
+            const dataBuffer = Buffer.concat(bufferError);
             (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
-            (0, core_1.setFailed)(errorMessage);
-            reject(errorMessage);
+            resolve(dataBuffer.toString());
         });
     });
 };
