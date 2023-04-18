@@ -48,6 +48,9 @@ const run = async () => {
     // execute the validation in the SF instance of the package
     const commandToExecute = `./${constants_1.DEFAULT_SFDX_CLI_INSTALLATION_FOLDER}/${constants_1.Commands.SFDX}`;
     (0, exec_1.default)(commandToExecute, params).then((result) => {
+
+        (0, core_1.info)(`Result >>>> ${result}`);
+
         // parsed the result
         const parsedResult = JSON.parse(result);
         let failed = false;
