@@ -50,9 +50,6 @@ const run = async () => {
     (0, exec_1.default)(commandToExecute, params).then((result) => {
         // parsed the result
         const parsedResult = JSON.parse(result);
-
-        (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
-        
         let failed = false;
         // if it was a deployment, check the tests results if need it.
         // if it was a validation, process the results and return the job id
@@ -183,19 +180,24 @@ const exec = (command, params = []) => {
     return new Promise((resolve, reject) => {
         const cmd = (0, child_process_1.spawn)(command, params);
         const bufferArray = [];
+        const bufferError = [];
         cmd.stdout.on('data', (data) => {
             bufferArray.push(data);
         });
-        cmd.stderr.on('data', (data) => {
-            const errorMessage = `ERROR MESSAGE: ${JSON.stringify(data)}`;
-            (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
-            (0, core_1.setFailed)(errorMessage);
-            reject(errorMessage);
-        });
-        cmd.on('close', () => {
+        cmd.stdout.on('end', () => {
             const dataBuffer = Buffer.concat(bufferArray);
             (0, core_1.info)(`SUCCESSFUL execution of the command ${command} with params ${params.toString()} \n`);
             resolve(dataBuffer.toString());
+        });
+        cmd.stderr.on('data', (data) => {
+            bufferError.push(data);
+        });
+        cmd.stderr.on('end', () => {
+            const dataBuffer = Buffer.concat(bufferError).toString();
+            const errorMessage = `ERROR MESSAGE: ${JSON.stringify(dataBuffer)}`;
+            (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
+            (0, core_1.setFailed)(errorMessage);
+            reject(errorMessage);
         });
     });
 };
