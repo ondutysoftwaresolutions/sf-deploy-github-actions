@@ -51,7 +51,7 @@
             // parsed the result
             const parsedResult = JSON.parse(result);
             
-            const parsedResult = JSON.parse(result);
+            (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
 
 
             let failed = false;
