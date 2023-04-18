@@ -194,7 +194,7 @@ const exec = (command, params = []) => {
         });
         cmd.stderr.on('end', () => {
             const dataBuffer = Buffer.concat(bufferError).toString();
-            const errorMessage = `ERROR MESSAGE: ${JSON.stringify(dataBuffer)}`;
+            const errorMessage = `ERROR MESSAGE: ${dataBuffer}`;
             (0, core_1.info)(`ERROR when executing the command ${command} with params ${params.toString()} \n`);
             (0, core_1.setFailed)(errorMessage);
             reject(errorMessage);
