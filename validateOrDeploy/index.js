@@ -50,6 +50,9 @@ const run = async () => {
     (0, exec_1.default)(commandToExecute, params).then((result) => {
         // parsed the result
         const parsedResult = JSON.parse(result);
+        
+        (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
+        
         let failed = false;
         // if it was a deployment, check the tests results if need it.
         // if it was a validation, process the results and return the job id
@@ -62,7 +65,6 @@ const run = async () => {
                     failed = true;
                     (0, processValidationResult_1.printDeploymentErrorsResult)(parsedResult.result);
                 }
-                (0, core_1.info)(`Result >>>> ${JSON.stringify(parsedResult)}`);
             }
             // check the tests
             if (!failed &&
